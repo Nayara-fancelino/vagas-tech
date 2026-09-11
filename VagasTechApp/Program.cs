@@ -2,7 +2,7 @@
 using System.Data;
 using VagasTechApp;
 
-var stringConexao = "Data Source=/content/vagas_tech.db";
+var stringConexao = "Data Source=vagas_tech.db";
 
 try
 {
