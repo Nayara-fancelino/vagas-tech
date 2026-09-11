@@ -48,5 +48,15 @@ O projeto contará com:
 - Nayara Francelino
 
 ## Status
+## Update: Atualizar Salario da Vaga e Delete: Cancelar Candidatura
+UPDATE
+* AtualizarSalarioVagaInterativo() só cuida da interface; quem mexe no banco de fato é o AtualizarSalarioVaga() que pode ser reaproveitado sem alterações.
+
+* Uso do return logo depois de cada TryParse que falha, em vez de aninhar os ifs um dentro do outro — assim o método sai cedo se o ID for inválido, sem nem chegar a perguntar o salário. Deixa o fluxo mais linear e fácil de ler.
+
+* decimal.TryParse em vez de int.TryParse para o salário, já que a tabela VAGAS define SALARIO como Número Decimal.
+
+DELETE
+* CancelarCandidaturaInterativo() fica responsável só pela parte de interface, pede o ID ao usuário (com Console.ReadLine) e depois chama o CancelarCandidatura() internamente. Assim separa a responsabilidade: um método cuida da interação com o usuário, o outro só mexe no banco. Isso permite reuso do CancelarCandidatura() em outras etapas, sem depender de input do usuário.
 
 🚧 Projeto em desenvolvimento.
