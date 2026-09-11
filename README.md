@@ -42,10 +42,10 @@ O projeto contará com:
 
 ## Squad Dorothy Vaughan
 
-- Nayara Francelino
-- Maria Luiza
-- Josiane Fatima
 - Bruna Cruz
+- Josiane Fatima
+- Maria Luiza
+- Nayara Francelino
 
 ## Status
 
