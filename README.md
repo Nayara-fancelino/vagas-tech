@@ -48,15 +48,58 @@ O projeto contará com:
 - Nayara Francelino
 
 ## Status
-## Update: Atualizar Salario da Vaga e Delete: Cancelar Candidatura
-UPDATE
-* AtualizarSalarioVagaInterativo() só cuida da interface; quem mexe no banco de fato é o AtualizarSalarioVaga() que pode ser reaproveitado sem alterações.
+## Métodos CRUD
 
-* Uso do return logo depois de cada TryParse que falha, em vez de aninhar os ifs um dentro do outro — assim o método sai cedo se o ID for inválido, sem nem chegar a perguntar o salário. Deixa o fluxo mais linear e fácil de ler.
+### Update — `AtualizarSalarioVaga`
 
-* decimal.TryParse em vez de int.TryParse para o salário, já que a tabela VAGAS define SALARIO como Número Decimal.
+Atualiza o salário de uma vaga já cadastrada na tabela `VAGAS`.
 
-DELETE
-* CancelarCandidaturaInterativo() fica responsável só pela parte de interface, pede o ID ao usuário (com Console.ReadLine) e depois chama o CancelarCandidatura() internamente. Assim separa a responsabilidade: um método cuida da interação com o usuário, o outro só mexe no banco. Isso permite reuso do CancelarCandidatura() em outras etapas, sem depender de input do usuário.
+```csharp
+public static void AtualizarSalarioVaga(
+    SqliteConnection conexao,
+    int idVaga,
+    decimal novoSalario)
+```
+
+**Parâmetros:**
+| Parâmetro | Tipo | Descrição |
+|---|---|---|
+| `conexao` | `SqliteConnection` | Conexão já aberta com o banco `vagas_tech.db` |
+| `idVaga` | `int` | ID da vaga a ser atualizada |
+| `novoSalario` | `decimal` | Novo valor de salário |
+
+**Versão interativa:** `AtualizarSalarioVagaInterativo(SqliteConnection conexao)` — pede o `idVaga` e o `novoSalario` via console, valida a entrada (`TryParse`) e chama o método acima.
+
+---
+
+### Delete — `CancelarCandidatura`
+
+Remove um registro da tabela `CANDIDATURAS`, cancelando a candidatura de uma candidata a uma vaga.
+
+```csharp
+public static void CancelarCandidatura(
+    SqliteConnection conexao,
+    int idCandidatura)
+```
+
+**Parâmetros:**
+| Parâmetro | Tipo | Descrição |
+|---|---|---|
+| `conexao` | `SqliteConnection` | Conexão já aberta com o banco `vagas_tech.db` |
+| `idCandidatura` | `int` | ID da candidatura a ser excluída |
+
+**Versão interativa:** `CancelarCandidaturaInterativo(SqliteConnection conexao)` — pede o `idCandidatura` via console, valida a entrada e chama o método acima.
+
+---
+
+### Exemplo de uso
+
+```csharp
+using var conexao = new SqliteConnection("Data Source=/content/vagas_tech.db");
+conexao.Open();
+
+AtualizarSalarioVagaInterativo(conexao);
+CancelarCandidaturaInterativo(conexao);
+```
 
 🚧 Projeto em desenvolvimento.
