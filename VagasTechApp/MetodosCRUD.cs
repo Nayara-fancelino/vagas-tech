@@ -20,8 +20,9 @@ public static class MetodosCRUD
     public static void ConsultarCandidaturas(SqliteConnection conexao)
     {
         var sql = @"
-      SELECT CANDIDATURAS.DATA_ENVIO, VAGAS.TITULO AS VAGA, CANDIDATAS.NOME AS NOME_CANDIDATA
-      FROM CANDIDATURAS
+      SELECT 
+        CANDIDATAS.NOME AS NOME_CANDIDATA, CANDIDATAS.EMAIL AS EMAIL_CANDIDATA, VAGAS.TITULO AS VAGA, VAGAS.EMPRESA AS EMPRESA
+      FROM CANDIDATAS
       INNER JOIN VAGAS ON VAGAS.ID_VAGA = CANDIDATURAS.ID_VAGA
       INNER JOIN CANDIDATAS ON CANDIDATAS.ID_CANDIDATA = CANDIDATURAS.ID_CANDIDATA;";
 
@@ -33,7 +34,7 @@ public static class MetodosCRUD
                 while (leitor.Read())
                 {
                     Console.ForegroundColor = ConsoleColor.DarkBlue;
-                    Console.WriteLine($"Data: {leitor["DATA_ENVIO"]} | Candidata: {leitor["NOME_CANDIDATA"]} | Vaga: {leitor["VAGA"]} ");
+                    Console.WriteLine($"Candidata: {leitor["NOME_CANDIDATA"]} - E-mail: {leitor["EMAIL_CANDIDATA"]} | Vaga: {leitor["VAGA"]} - Empresa: {leitor["EMPRESA"]}");
                 }
 
                 Console.ForegroundColor = ConsoleColor.White;
