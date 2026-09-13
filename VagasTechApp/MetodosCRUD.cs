@@ -29,16 +29,16 @@ public static class MetodosCRUD
     public static void AtualizarSalarioVagaInterativo(SqliteConnection conexao)
     {
         Console.Write("Digite o ID da vaga que deseja atualizar: ");
-        string entradaId = Console.ReadLine();
+        string? entradaId = Console.ReadLine();
 
         if (!int.TryParse(entradaId, out int idVaga))
         {
-            Console.WriteLine("ID inválido. Digite apenas números.");
+            Console.WriteLine("ID inválido. Digite um ID de vaga válido.");
             return;
         }
 
         Console.Write("Digite o novo salário: ");
-        string entradaSalario = Console.ReadLine();
+        string? entradaSalario = Console.ReadLine();
 
         if (!decimal.TryParse(entradaSalario, out decimal novoSalario))
         {
@@ -76,7 +76,7 @@ public static class MetodosCRUD
 
         if (!int.TryParse(entrada, out int idCandidatura))
         {
-            Console.WriteLine("ID inválido. Digite apenas números.");
+            Console.WriteLine("ID inválido. Digite um ID de candidatura válido.");
             return;
         }
 
