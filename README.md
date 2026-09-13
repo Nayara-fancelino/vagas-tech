@@ -48,6 +48,9 @@ O projeto contará com:
 - Nayara Francelino
 
 ## Status
+
+✅ Projeto concluído.
+
 ## Métodos CRUD
 
 ### Update — `AtualizarSalarioVaga`
@@ -101,5 +104,3 @@ conexao.Open();
 AtualizarSalarioVagaInterativo(conexao);
 CancelarCandidaturaInterativo(conexao);
 ```
-
-🚧 Projeto em desenvolvimento.
