@@ -1,107 +1,104 @@
-using System.Globalization;
 using Microsoft.Data.Sqlite;
 using VagasTechApp;
 
 const string connectionString = "Data Source=/content/vagas_tech.db";
+
 using var conexao = new SqliteConnection(connectionString);
 conexao.Open();
 
-Console.WriteLine("=== Vagas Tech ===");
+Console.WriteLine("=== Vagas Tech - Integração Final ===\n");
 
-string opcao;
-do
+const int idVagaEngenharia = 1;
+const int idVagaBi = 2;
+const int idMariana = 1;
+
+Console.WriteLine("1. Cadastrando vagas...");
+
+MetodosCRUD.CadastrarVaga(
+    conexao,
+    idVagaEngenharia,
+    "Engenheira de Dados",
+    "Empresa Alfa",
+    9000m
+);
+
+MetodosCRUD.CadastrarVaga(
+    conexao,
+    idVagaBi,
+    "Analista de BI",
+    "Empresa Ômega",
+    7500m
+);
+
+Console.WriteLine("Vagas cadastradas.\n");
+
+Console.WriteLine("2. Cadastrando candidata...");
+
+MetodosCRUD.CadastrarCandidata(
+    conexao,
+    idMariana,
+    "Mariana Souza",
+    "mariana.souza@email.com"
+);
+
+Console.WriteLine("Candidata cadastrada.\n");
+
+Console.WriteLine("3. Enviando candidaturas...");
+
+MetodosCRUD.EnviarCandidatura(
+    conexao,
+    901,
+    DateTime.Now,
+    idVagaEngenharia,
+    idMariana
+);
+
+MetodosCRUD.EnviarCandidatura(
+    conexao,
+    902,
+    DateTime.Now,
+    idVagaBi,
+    idMariana
+);
+
+Console.WriteLine("Candidaturas enviadas.\n");
+
+Console.WriteLine("4. Consultando candidaturas...");
+MetodosCRUD.ConsultarCandidaturas(conexao);
+
+Console.WriteLine("5. Atualizando salário...");
+
+MetodosCRUD.AtualizarSalarioVaga(
+    conexao,
+    idVagaEngenharia,
+    9500m
+);
+
+using (var comandoSalario = new SqliteCommand(
+    "SELECT SALARIO FROM VAGAS WHERE ID_VAGA = @idVaga;",
+    conexao))
 {
-	Console.WriteLine("\n1 - Cadastrar vaga");
-	Console.WriteLine("2 - Cadastrar candidata");
-	Console.WriteLine("3 - Enviar candidatura");
-	Console.WriteLine("4 - Consultar candidaturas");
-	Console.WriteLine("5 - Atualizar salário de vaga");
-	Console.WriteLine("6 - Cancelar candidatura");
-	Console.WriteLine("0 - Sair");
-	Console.Write("Escolha uma opção: ");
+    comandoSalario.Parameters.AddWithValue("@idVaga", idVagaEngenharia);
 
-	opcao = Console.ReadLine() ?? string.Empty;
-	try
-	{
-		switch (opcao)
-		{
-			case "1":
-				MetodosCRUD.CadastrarVaga(conexao, LerInteiro("ID da vaga: "), LerTexto("Título: "), LerTexto("Empresa: "), LerDecimal("Salário: "));
-				Console.WriteLine("Vaga cadastrada com sucesso.");
-				break;
+    var salarioAtualizado = Convert.ToDecimal(
+        comandoSalario.ExecuteScalar()
+    );
 
-			case "2":
-				MetodosCRUD.CadastrarCandidata(conexao, LerInteiro("ID da candidata: "), LerTexto("Nome: "), LerTexto("E-mail: "));
-				Console.WriteLine("Candidata cadastrada com sucesso.");
-				break;
-
-			case "3":
-				break;
-
-			case "4":
-				break;
-
-			case "5":
-				break;
-
-			case "6":
-				break;
-
-			case "0":
-				Console.WriteLine("Encerrando sistema...");
-				break;
-
-			default:
-				Console.WriteLine("Opção inválida.");
-				break;
-		}
-	}
-	catch (Exception erro)
-	{
-		Console.WriteLine($"Não foi possível concluir a operação: {erro.Message}");
-	}
-} while (opcao != "0");
-
-static string LerTexto(string mensagem)
-{
-	while (true)
-	{
-		Console.Write(mensagem);
-		string valor = Console.ReadLine()?.Trim() ?? string.Empty;
-		if (!string.IsNullOrWhiteSpace(valor))
-		{
-			return valor;
-		}
-
-		Console.WriteLine("O valor é obrigatório.");
-	}
+    Console.WriteLine(
+        $"Salário atualizado no banco: R$ {salarioAtualizado:N2}\n"
+    );
 }
 
-static int LerInteiro(string mensagem)
-{
-	while (true)
-	{
-		Console.Write(mensagem);
-		if (int.TryParse(Console.ReadLine(), out int valor))
-		{
-			return valor;
-		}
+Console.WriteLine("6. Cancelando candidatura 902...");
 
-		Console.WriteLine("Digite um número inteiro válido.");
-	}
-}
+MetodosCRUD.CancelarCandidatura(
+    conexao,
+    902
+);
 
-static decimal LerDecimal(string mensagem)
-{
-	while (true)
-	{
-		Console.Write(mensagem);
-		string entrada = Console.ReadLine() ?? string.Empty;
-		if (decimal.TryParse(entrada, NumberStyles.Number, CultureInfo.GetCultureInfo("pt-BR"), out decimal valor))
-		{
-			return valor;
-		}
+Console.WriteLine("Candidatura 902 cancelada.\n");
 
-		Console.WriteLine("Digite um salário válido, por exemplo 9500,00.");
-	}
-}
+Console.WriteLine("7. Resultado final:");
+MetodosCRUD.ConsultarCandidaturas(conexao);
+
+Console.WriteLine("=== Simulação finalizada ===");
