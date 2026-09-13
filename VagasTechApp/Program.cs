@@ -67,15 +67,30 @@ Console.WriteLine("4. Consultando candidaturas...");
 MetodosCRUD.ConsultarCandidaturas(conexao);
 
 Console.WriteLine("5. Atualizando salário...");
+
 MetodosCRUD.AtualizarSalarioVaga(
     conexao,
     idVagaEngenharia,
     9500m
 );
 
-Console.WriteLine("Salário atualizado para R$ 9.500,00.\n");
+using (var comandoSalario = new SqliteCommand(
+    "SELECT SALARIO FROM VAGAS WHERE ID_VAGA = @idVaga;",
+    conexao))
+{
+    comandoSalario.Parameters.AddWithValue("@idVaga", idVagaEngenharia);
+
+    var salarioAtualizado = Convert.ToDecimal(
+        comandoSalario.ExecuteScalar()
+    );
+
+    Console.WriteLine(
+        $"Salário atualizado no banco: R$ {salarioAtualizado:N2}\n"
+    );
+}
 
 Console.WriteLine("6. Cancelando candidatura 902...");
+
 MetodosCRUD.CancelarCandidatura(
     conexao,
     902
