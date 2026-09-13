@@ -85,6 +85,7 @@ public static class MetodosCRUD
     }
 	public static void CadastrarVaga(SqliteConnection conexao, int idVaga, string titulo, string empresa, decimal salario)
 	{
+		Console.Write("===== Cadastrar Vaga =====\n");
 		var sql = "INSERT INTO VAGAS (ID_VAGA, TITULO, EMPRESA, SALARIO) VALUES (@idVaga, @titulo, @empresa, @salario);";
 		using (var comando = new SqliteCommand(sql, conexao))
 		{
@@ -98,6 +99,7 @@ public static class MetodosCRUD
 
 	public static void CadastrarCandidata(SqliteConnection conexao, int idCandidata, string nome, string email)
 	{
+		Console.Write("===== Cadastrar Candidata =====\n");
 		var sql = "INSERT INTO CANDIDATAS (ID_CANDIDATA, NOME, EMAIL) VALUES (@idCandidata, @nome, @email);";
 		using (var comando = new SqliteCommand(sql, conexao))
 		{
