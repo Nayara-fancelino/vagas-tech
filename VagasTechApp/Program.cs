@@ -26,12 +26,37 @@ do
 		switch (opcao)
 		{
 			case "1":
-				MetodosCRUD.CadastrarVaga(conexao, LerInteiro("ID da vaga: "), LerTexto("Título: "), LerTexto("Empresa: "), LerDecimal("Salário: "));
+				Console.Write("Digite os dados da vaga:\n");
+				Console.Write("ID da vaga: ");
+				if (!int.TryParse(Console.ReadLine(), out int vagaId)) { throw new Exception("ID da vaga inválido."); }
+				
+				Console.Write("Título: "); 
+				string titulo = Console.ReadLine()!; 
+				if (string.IsNullOrWhiteSpace(titulo)) { throw new Exception("Título inválido."); } 
+				
+				Console.Write("Empresa: "); 
+				string empresa = Console.ReadLine()!; 
+				if (string.IsNullOrWhiteSpace(empresa)) { throw new Exception("Empresa inválida."); } 
+				
+				Console.Write("Salário: "); 
+				if (!decimal.TryParse(Console.ReadLine(), out decimal salario)) { throw new Exception("Salário inválido."); }
+
+				MetodosCRUD.CadastrarVaga(conexao, vagaId, titulo, empresa, salario);
 				Console.WriteLine("Vaga cadastrada com sucesso.");
 				break;
 
 			case "2":
-				MetodosCRUD.CadastrarCandidata(conexao, LerInteiro("ID da candidata: "), LerTexto("Nome: "), LerTexto("E-mail: "));
+				Console.Write("Digite os dados da candidata:\n");
+				Console.Write("ID da candidata: ");
+				if (!int.TryParse(Console.ReadLine(), out int candidataId)) { throw new Exception("ID da candidata inválido."); }
+				
+				Console.Write("Nome: ");
+				string nome = Console.ReadLine() ?? throw new Exception("Nome inválido.");
+				
+				Console.Write("E-mail: ");
+				string email = Console.ReadLine() ?? throw new Exception("E-mail inválido.");
+
+				MetodosCRUD.CadastrarCandidata(conexao, candidataId, nome, email);
 				Console.WriteLine("Candidata cadastrada com sucesso.");
 				break;
 
@@ -62,46 +87,3 @@ do
 	}
 } while (opcao != "0");
 
-static string LerTexto(string mensagem)
-{
-	while (true)
-	{
-		Console.Write(mensagem);
-		string valor = Console.ReadLine()?.Trim() ?? string.Empty;
-		if (!string.IsNullOrWhiteSpace(valor))
-		{
-			return valor;
-		}
-
-		Console.WriteLine("O valor é obrigatório.");
-	}
-}
-
-static int LerInteiro(string mensagem)
-{
-	while (true)
-	{
-		Console.Write(mensagem);
-		if (int.TryParse(Console.ReadLine(), out int valor))
-		{
-			return valor;
-		}
-
-		Console.WriteLine("Digite um número inteiro válido.");
-	}
-}
-
-static decimal LerDecimal(string mensagem)
-{
-	while (true)
-	{
-		Console.Write(mensagem);
-		string entrada = Console.ReadLine() ?? string.Empty;
-		if (decimal.TryParse(entrada, NumberStyles.Number, CultureInfo.GetCultureInfo("pt-BR"), out decimal valor))
-		{
-			return valor;
-		}
-
-		Console.WriteLine("Digite um salário válido, por exemplo 9500,00.");
-	}
-}
